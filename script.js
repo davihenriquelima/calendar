@@ -66,6 +66,7 @@ function fix(time) {
     return time < 10 ? `0${time}` : time;
 }
 
+
 function fillCalendar() {
     let date = new Date;
     let currentYearCalendar = date.getFullYear();
@@ -73,7 +74,7 @@ function fillCalendar() {
     let currentMonthCalendar;
     
     for(let i in monthsArray) {
-        if(monthsArray.indexOf(monthsArray[i]) === currentMonthCalendarNum) {
+        if(monthsArray.indexOf(monthsArray[i % monthsArray.length]) === currentMonthCalendarNum % monthsArray.length) {
             currentMonthCalendar = monthsArray[i];
         }
     }
@@ -141,7 +142,6 @@ function fillCalendar() {
         }
     }
 }
-
 
 /* 
 Foi necessário fazer essa verificação com hasOwnProperty pois a iteração ocorreu
