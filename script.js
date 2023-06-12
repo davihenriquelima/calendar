@@ -1,23 +1,16 @@
 // elements
-
 let currentDateEl = document.querySelector('.actual-date');
 let currentHourEl = document.querySelector('.actual-hour');
-
 let controlNext = document.querySelector('.control.next');
 let controlPrev = document.querySelector('.control.prev');
 
-// fixed global variables
 
+// fixed global variables
 let weekDaysArray = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 let monthsArray = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-// events
 
-//controlNext.addEventListener('click', nextMonth);
-//controlPrev.addEventListener('click', prevMonth);
-
-// Fixed Code
-
+// Atributo fixo das células dos dias das semanas
 let monthDayCells = document.querySelectorAll('.month-day--cell');
 for(let cell in monthDayCells) {
     if(monthDayCells.hasOwnProperty(cell)) { // Se o objeto possui a propriedade não herdada "cell"(argumento que recebe o item do objeto definido no for) **
@@ -26,8 +19,8 @@ for(let cell in monthDayCells) {
     }
 }
 
-// functions
 
+// functions
 function update() {
     //preenchendo a data e hora atual
     const date = new Date();
@@ -55,34 +48,34 @@ function update() {
     currentDateEl.innerHTML = `${currentWeekDay}, ${currentDay} de ${currentMonth} de ${currentYear}`;
     currentHourEl.innerHTML = `${fix(hour)}:${fix(minutes)}:${fix(seconds)}`;
 
-    fillCalendar()
 }
-
-update()
-
-setInterval(update, 1000);
-
 function fix(time) {
     return time < 10 ? `0${time}` : time;
 }
 
 
-function fillCalendar() {
-    let date = new Date;
-    let currentYearCalendar = date.getFullYear();
-    let currentMonthCalendarNum = date.getMonth();
+update()
+
+setInterval(()=>{
+    update()
+    currentDateCalendar()
+}, 050);
+
+
+function fillCalendar(year, monthNum) {
+
     let currentMonthCalendar;
     
     for(let i in monthsArray) {
-        if(monthsArray.indexOf(monthsArray[i % monthsArray.length]) === currentMonthCalendarNum % monthsArray.length) {
+        if(monthsArray.indexOf(monthsArray[i % monthsArray.length]) === monthNum % monthsArray.length) {
             currentMonthCalendar = monthsArray[i];
         }
     }
     document.querySelector('.month-calendar').innerHTML = currentMonthCalendar;
 
-    let firstDayOfMonth = new Date(currentYearCalendar, currentMonthCalendarNum, 1);// setando o primeiro dia do mês atual, ex: 01/05/2023 
+    let firstDayOfMonth = new Date(year, monthNum, 1);// setando o primeiro dia do mês atual, ex: 01/05/2023 
     let weekDayFirstDay = firstDayOfMonth.getDay(); // número do dia da semana em que cai o primeiro dia do mês (1 = segunda)
-    let lastDayOfMonth = new Date(currentYearCalendar, currentMonthCalendarNum+1,0).getDate(); // último dia do mês atual, baseado no próximo mês - 1 dia
+    let lastDayOfMonth = new Date(year, monthNum+1,0).getDate(); // último dia do mês atual, baseado no próximo mês - 1 dia
     let currentMonthDaysCalendar = []; // array com todos os dias do mês atual
     for (let i = firstDayOfMonth.getDate(); i <= lastDayOfMonth; i++) {
         currentMonthDaysCalendar.splice(i-1,1, i); // substitui cada dia atual no array
@@ -115,7 +108,7 @@ function fillCalendar() {
         if(monthDayCells.hasOwnProperty(i)){
             if(i<weekDayIndex) {
                 qtOfPrevItems++;
-                actualPrevDate = new Date(currentYearCalendar,currentMonthCalendarNum, 1-qtOfPrevItems).getDate()
+                actualPrevDate = new Date(year, monthNum, 1-qtOfPrevItems).getDate()
                 prevMonthDays.push(actualPrevDate)
                 prevMonthDays.sort((a,b)=> a-b)
                 prevMonthDays.forEach((day, index)=>{
@@ -126,22 +119,35 @@ function fillCalendar() {
         }
     }
     let qtOfNextItems = 0;
-    let nextMonthDays = []
-    let actualNextDate = []
+    let nextMonthDays = [];
+    let actualNextDate = [];
     for(let i=0; i<=monthDayCells.length;i++) {
         if(monthDayCells.hasOwnProperty(i)){
             if ((i-qtOfPrevItems) >= lastDayOfMonth){
                 qtOfNextItems++;
-                actualNextDate = new Date(currentYearCalendar, currentMonthCalendarNum, lastDayOfMonth+qtOfNextItems).getDate()
-                nextMonthDays.push(actualNextDate)
+                actualNextDate = new Date(year, monthNum, lastDayOfMonth+qtOfNextItems).getDate();
+                nextMonthDays.push(actualNextDate);
                 nextMonthDays.forEach((day)=> {
-                    monthDayCells[i].innerHTML = day
+                    monthDayCells[i].innerHTML = day;
                 })
-                monthDayCells[i].classList.add('next-days')
+                monthDayCells[i].classList.add('next-days');
             }
         }
     }
+
 }
+
+
+let currentYearCalendar;
+let currentMonthCalendarNum;
+function currentDateCalendar() {
+    let dateCalendar = new Date();
+    currentYearCalendar = dateCalendar.getFullYear();
+    currentMonthCalendarNum = dateCalendar.getMonth();
+    fillCalendar(currentYearCalendar, currentMonthCalendarNum)
+}
+
+currentDateCalendar();
 
 /* 
 Foi necessário fazer essa verificação com hasOwnProperty pois a iteração ocorreu
