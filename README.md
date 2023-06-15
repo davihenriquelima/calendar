@@ -1,2 +1,2 @@
 # calendar
- Projeto autoral e individual, criado em maio de 2023.
+ Projeto autoral e individual, iniciado em maio de 2023.
