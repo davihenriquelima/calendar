@@ -52,18 +52,13 @@ function update() {
 function fix(time) {
     return time < 10 ? `0${time}` : time;
 }
-
-
 update()
-
 setInterval(()=>{
     update()
-    currentDateCalendar()
 }, 050);
 
 
 function fillCalendar(year, monthNum) {
-
     let currentMonthCalendar;
     
     for(let i in monthsArray) {
@@ -71,14 +66,14 @@ function fillCalendar(year, monthNum) {
             currentMonthCalendar = monthsArray[i];
         }
     }
-    document.querySelector('.month-calendar').innerHTML = currentMonthCalendar;
+    document.querySelector('.month-calendar').innerHTML = `${currentMonthCalendar} de ${year}`;
 
     let firstDayOfMonth = new Date(year, monthNum, 1);// setando o primeiro dia do mês atual, ex: 01/05/2023 
     let weekDayFirstDay = firstDayOfMonth.getDay(); // número do dia da semana em que cai o primeiro dia do mês (1 = segunda)
     let lastDayOfMonth = new Date(year, monthNum+1,0).getDate(); // último dia do mês atual, baseado no próximo mês - 1 dia
     let currentMonthDaysCalendar = []; // array com todos os dias do mês atual
     for (let i = firstDayOfMonth.getDate(); i <= lastDayOfMonth; i++) {
-        currentMonthDaysCalendar.splice(i-1,1, i); // substitui cada dia atual no array
+        currentMonthDaysCalendar.splice(i-1,1, i); // substitui e adiciona cada dia do mês no array
     }
     
     let weekDayCells = []; // array que vai receber o value do atributo week-day-cell
@@ -101,6 +96,9 @@ function fillCalendar(year, monthNum) {
         }
     }
 
+    for (let i = 0; i < monthDayCells.length; i++) {
+        monthDayCells[i].classList.remove('previous-days', 'next-days');
+    }
     let qtOfPrevItems = 0;
     let prevMonthDays = []
     let actualPrevDate = 0
@@ -134,23 +132,56 @@ function fillCalendar(year, monthNum) {
             }
         }
     }
-
 }
 
 
 let currentYearCalendar;
 let currentMonthCalendarNum;
 function currentDateCalendar() {
-    let dateCalendar = new Date();
-    currentYearCalendar = dateCalendar.getFullYear();
-    currentMonthCalendarNum = dateCalendar.getMonth();
-    fillCalendar(currentYearCalendar, currentMonthCalendarNum)
-}
+    let realDate = new Date();
+    let realYear = realDate.getFullYear();
+    let realMonthNum = realDate.getMonth();
 
-currentDateCalendar();
+    if(typeof currentYearCalendar == 'number' && typeof currentMonthCalendarNum == 'number') {
+        if (currentYearCalendar !== realYear || currentMonthCalendarNum !== realMonthNum) {
+            fillCalendar(currentYearCalendar, currentMonthCalendarNum);
+        } else {
+            currentYearCalendar = realYear
+            currentMonthCalendarNum = realMonthNum
+            fillCalendar(currentYearCalendar, currentMonthCalendarNum);
+        }
+    } else {
+        currentYearCalendar = realYear
+        currentMonthCalendarNum = realMonthNum
+        fillCalendar(currentYearCalendar, currentMonthCalendarNum);
+    }
+}
+setInterval(() => {
+    currentDateCalendar();
+}, 050);
+
+
+//Events
+controlNext.addEventListener('click', ()=>{
+    currentMonthCalendarNum++
+    if(currentMonthCalendarNum > 11) {
+        currentMonthCalendarNum = 0
+        currentYearCalendar++
+    }
+    fillCalendar(currentYearCalendar, currentMonthCalendarNum)
+})
+controlPrev.addEventListener('click', ()=>{
+    currentMonthCalendarNum--
+    if(currentMonthCalendarNum < 0) {
+        currentMonthCalendarNum = 11
+        currentYearCalendar--
+    }
+    fillCalendar(currentYearCalendar, currentMonthCalendarNum)
+})
+
 
 /* 
-Foi necessário fazer essa verificação com hasOwnProperty pois a iteração ocorreu
+Foi necessário fazer essa verificação com hasOwnProperty pois a iteração "for... in" ocorreu
 também sobre as propriedades herdadas de um object Nodelist, 
 como por exemplo: length, keys... verificando dessa forma, o código dentro 
 do "if" usa apenas as propriedades não herdadas do objeto, ou seja, 
