@@ -31,6 +31,11 @@ let seconds = 0
 let currentMonth; // mês atual
 let currentWeekDay; // dia da semana atual
 
+let firstDayOfMonth = 0;// variável que vai receber o primeiro dia do mês atual, ex: 01/05/2023
+let weekDayFirstDay = 0; // vai receber o numero do dia da semana em que cai o dia 1 do mês (1 = segunda)
+let lastDayOfMonth = 0; // vai receber o último dia do mês atual baseado no próximo mes menos 1 (0)
+let currentMonthDaysCalendar ; // variável que vai receber array onde serão colocados todos os dias do mês atual
+
 let currentYearCalendar; // usada em currentDateCalendar
 let currentMonthCalendarNum; // usada em currentDateCalendar
 let currentMonthCalendar; // usada em fillCalendar
@@ -84,10 +89,10 @@ function fillCalendar(year, monthNum) {
     }
     monthAndYearCalendar.innerHTML = `${currentMonthCalendar} de ${year}`;
 
-    let firstDayOfMonth = new Date(year, monthNum, 1);// definindo o primeiro dia do mês atual, ex: 01/05/2023
-    let weekDayFirstDay = firstDayOfMonth.getDay(); // numero do dia da semana em que cai o dia 1 do mês (1 = segunda)
-    let lastDayOfMonth = new Date(year, monthNum+1,0).getDate(); // último dia do mês atual baseado no próximo mes menos 1 (0)
-    let currentMonthDaysCalendar = []; // array com todos os dias do mês atual
+    firstDayOfMonth = new Date(year, monthNum, 1);// definindo o primeiro dia do mês atual, ex: 01/05/2023
+    weekDayFirstDay = firstDayOfMonth.getDay(); // numero do dia da semana em que cai o dia 1 do mês (1 = segunda)
+    lastDayOfMonth = new Date(year, monthNum+1,0).getDate(); // último dia do mês atual baseado no próximo mes menos 1 (0)
+    currentMonthDaysCalendar = []; // array com todos os dias do mês atual
 
     for (let i = firstDayOfMonth.getDate(); i <= lastDayOfMonth; i++) {
         currentMonthDaysCalendar.splice(i-1,1, i); // replaces and adds each day of the month to the array
@@ -228,7 +233,6 @@ function changeMonth(e) {
     let isControlButton = false;
     
     monthDayCells.forEach((cell) => {
-        
         if (selectedDayCell !== null && cell === selectedDayCell) {
             selectedDay = selectedDayCell.innerHTML;
             selectedDayCell.classList.remove('selected');
@@ -263,10 +267,16 @@ function changeMonth(e) {
     
     monthDayCells.forEach((cell)=>{
         if(!cell.classList.contains('previous-days') && !cell.classList.contains('next-days')){
-            if(isControlButton && cell.innerHTML === selectedDay) {
-                cell.classList.add('selected');
-                selectedDayCell = cell;
-                selectedDay = selectedDayCell.innerHTML;
+            if(isControlButton) {
+                if(cell.innerHTML === selectedDay) {
+                    cell.classList.add('selected');
+                    selectedDayCell = cell;
+                    selectedDay = selectedDayCell.innerHTML;
+                } else if((parseInt(selectedDay) > parseInt(cell.innerHTML) && cell.innerHTML === lastDayOfMonth.toString())){
+                    cell.classList.add('selected');
+                    selectedDayCell = cell;
+                    selectedDay = selectedDayCell.innerHTML;
+                }
             } else if (!isControlButton && cell.innerHTML === clickedDay) {
                 cell.classList.add('selected');
                 selectedDayCell = cell;
