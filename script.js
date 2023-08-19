@@ -43,6 +43,7 @@ let currentMonthCalendar; // usada em fillCalendar
 let selectedDayCell = null; // será usada em fillCalendar para armazenar a célula selecionada
 let selectedDay = null; // será usada em fillCalendar para armazenar o dia da célula selecionada
 let clickedDay = null; // será usada em fillCalendar para armazenar o dia da célula clicada
+let modified = false // variável de controle para saber se já houve mudança de mês no calendário
 // podem ter o valor alterado conforme a necessidade do trecho do código
 
 // functions
@@ -177,7 +178,7 @@ function fillCalendar(year, monthNum) {
                 i.classList.add('today');
             }
 
-            if(selectedDayCell === null && i.classList.contains('today')){
+            if(selectedDayCell === null && i.classList.contains('today') && modified === false){
                 i.classList.add('selected');
                 selectedDayCell = i;
             }
@@ -231,6 +232,7 @@ function currentDateCalendar() {
 // Função para mudar de mês no calendário
 function changeMonth(e) {
     let isControlButton = false;
+    modified = true
     
     monthDayCells.forEach((cell) => {
         if (selectedDayCell !== null && cell === selectedDayCell) {
