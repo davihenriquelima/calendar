@@ -1,11 +1,11 @@
 // Seleção de elementos do DOM
 let currentDateEl = document.querySelector('.actual-date');
-let currentDateSelected = document.querySelector('.current-date-selected')
+let currentDateSelected = document.querySelector('.current-date-selected');
 let currentHourEl = document.querySelector('.actual-hour');
 let controlNext = document.querySelector('.control.next');
 let controlPrev = document.querySelector('.control.prev');
 let monthDayCells = document.querySelectorAll('.month-day--cell');
-let monthAndYearCalendar = document.querySelector('.month-calendar')
+let monthAndYearCalendar = document.querySelector('.month-calendar');
 
 // Arrays de dias da semana e meses
 const weekDaysArray = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
@@ -21,13 +21,13 @@ for(let cell in monthDayCells) {
 
 // Variáveis globais
 const date = new Date();
-let currentYear = 0 // Ano atual de fato
-let currentMonthNumber = 0 // número do mes atual
-let currentDay = 0 // dia atual 
-let currentWeekDayNumber = 0 // número do dia da semana atual
-let hour = 0
-let minutes = 0
-let seconds = 0 
+let currentYear = 0; // Ano atual de fato
+let currentMonthNumber = 0; // número do mes atual
+let currentDay = 0; // dia atual 
+let currentWeekDayNumber = 0; // número do dia da semana atual
+let hour = 0;
+let minutes = 0;
+let seconds = 0;
 let currentMonth; // mês atual
 let currentWeekDay; // dia da semana atual
 
@@ -123,8 +123,8 @@ function fillCalendar(year, monthNum) {
     }
 
     let qtOfPrevItems = 0;
-    let prevMonthDays = []
-    let actualPrevDate = 0
+    let prevMonthDays = [];
+    let actualPrevDate = 0;
     let qtOfNextItems = 0;
     let nextMonthDays = [];
     let actualNextDate = 0;
@@ -137,13 +137,13 @@ function fillCalendar(year, monthNum) {
             if(i<weekDayIndex) {
 
                 qtOfPrevItems++;
-                actualPrevDate = new Date(year, monthNum, 1-qtOfPrevItems).getDate()
-                prevMonthDays.push(actualPrevDate)
-                prevMonthDays.sort((a,b)=> a-b)
+                actualPrevDate = new Date(year, monthNum, 1-qtOfPrevItems).getDate();
+                prevMonthDays.push(actualPrevDate);
+                prevMonthDays.sort((a,b)=> a-b);
                 prevMonthDays.forEach((day, index)=>{
-                    monthDayCells[index].innerHTML = day
+                    monthDayCells[index].innerHTML = day;
                 })
-                monthDayCells[i].classList.add('previous-days')
+                monthDayCells[i].classList.add('previous-days');
 
             } else if ((i-qtOfPrevItems) >= lastDayOfMonth){
 
@@ -164,14 +164,14 @@ function fillCalendar(year, monthNum) {
         
         if(i.classList.contains('previous-days') || i.classList.contains('next-days')){
             
-            i.addEventListener('click', changeMonth)
+            i.addEventListener('click', changeMonth);
            
             return;
 
         } else {
-            i.removeEventListener('click', changeMonth)
+            i.removeEventListener('click', changeMonth);
 
-            let stringCurrentMonth = monthAndYearCalendar.innerHTML
+            let stringCurrentMonth = monthAndYearCalendar.innerHTML;
 
             if(currentMonthNumber === monthNum && parseInt(i.innerHTML) === currentDay && stringCurrentMonth.includes(currentYear.toString())){
                 i.classList.add('today');
@@ -183,8 +183,8 @@ function fillCalendar(year, monthNum) {
             }
 
             if(selectedDayCell !== null) {
-                selectedDay = selectedDayCell.innerHTML
-                currentDateSelected.innerHTML = `${parseInt(selectedDay)} de ${currentMonthCalendar} de ${year} `
+                selectedDay = selectedDayCell.innerHTML;
+                currentDateSelected.innerHTML = `${parseInt(selectedDay)} de ${currentMonthCalendar} de ${year} `;
             }
 
             i.addEventListener('click', (e)=>{
@@ -272,7 +272,7 @@ function changeMonth(e) {
                     cell.classList.add('selected');
                     selectedDayCell = cell;
                     selectedDay = selectedDayCell.innerHTML;
-                } else if((parseInt(selectedDay) > parseInt(cell.innerHTML) && cell.innerHTML === lastDayOfMonth.toString())){
+                } else if(parseInt(selectedDay) > parseInt(cell.innerHTML) && cell.innerHTML === lastDayOfMonth.toString()){
                     cell.classList.add('selected');
                     selectedDayCell = cell;
                     selectedDay = selectedDayCell.innerHTML;
