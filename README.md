@@ -14,7 +14,7 @@ Basta abrir o arquivo `index.html` ou acessar o link, que está abaixo, em seu n
 
 ## Contribuição
 
-Contribuições são bem-vindas! Se você quiser melhorar o calendário ou corrigir algum problema, sinta-se à vontade para enviar um pull request.
+Contribuições são bem-vindas! Se você quiser melhorar o calendário ou corrigir algum problema, sinta-se à vontade para enviar um pull request, afinal este é um projeto de nível iniciante, criado com intuito de testes de aprendizado.
 
 ## Licença
 
