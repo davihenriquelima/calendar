@@ -25,11 +25,11 @@ let currentYear = 0; // Ano atual de fato
 let currentMonthNumber = 0; // número do mes atual
 let currentDay = 0; // dia atual 
 let currentWeekDayNumber = 0; // número do dia da semana atual
+let currentMonth; // mês atual
+let currentWeekDay; // dia da semana atual
 let hour = 0;
 let minutes = 0;
 let seconds = 0;
-let currentMonth; // mês atual
-let currentWeekDay; // dia da semana atual
 
 let firstDayOfMonth = 0;// variável que vai receber o primeiro dia do mês atual, ex: 01/05/2023
 let weekDayFirstDay = 0; // vai receber o numero do dia da semana em que cai o dia 1 do mês (1 = segunda)
